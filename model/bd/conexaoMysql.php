@@ -1,21 +1,10 @@
 <?php
-/*******************************************************
- *    Arquivo para criar a conexão com o bando de dados.
- * 
- *  Lukas Santos Venancio 25/02/2022
- *  Versão 1.0
- *****************************************************/
+/*  Arquivo para criar a conexão com o bando de dados.*/
 
 const SERVER = 'localhost';
 const USER = 'root';
 const PASSWORD = 'bcd127';
 const DATABASE = 'dbcontatos';
-
-$resultado = conectarMysql();
-
-echo('<pre>');
-print_r($resultado);
-echo('</pre>');
 
  function conectarMysql(){
     $conexao = array();

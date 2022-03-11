@@ -3,6 +3,9 @@
 pela view. Será responsável por encaminhas as solicitações
 para a controller. */
 
+
+require_once('./controller/controllerContatos.php');
+
     $action = (string) null;
     $component = (string) null;
 
@@ -10,12 +13,17 @@ para a controller. */
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         $component = strtolower($_GET['component']);
-        $action = $_GET['action'];
+        $action = strtolower($_GET['action']);
 
+        /*Verificação da página que fez a requisição.*/
         if($component == 'contatos'){
-            echo('kbalbi');
+            
+            /*Verificaçãao da ação requirida pela página.*/
+            if($action == 'inserir'){
+                inserirContato($_POST);
+            }
+            
         }
     }
-
 
 ?>
