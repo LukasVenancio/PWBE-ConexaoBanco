@@ -22,10 +22,18 @@ Todos os tramatamentos e validações precisam ser feitos no arquivo controller.
                     "obs"      => $dadosDoContato['txtObs']
                 );
 
-                insertContato($arrayDados);
+                /*Função da model que de fato faz a inserção no Data Base. */
+                if(insertContato($arrayDados)){
+                    return true;
+                
+                }else{
+                    return array('idErro' => 1,
+                                'message' => 'Não foi possível inserir os dados no Data Base.');
+                }
 
             }else{
-                echo('Tô bem não man');
+                return array('idErro' => 2,
+                            'message' => 'Existem campos obrigatórios que não foram preenchidos.');
             }
         }
 
@@ -40,7 +48,16 @@ Todos os tramatamentos e validações precisam ser feitos no arquivo controller.
     }
 
     function listarContatos(){
-        
+
+        /*Recuparando os dados do Data Base através da função da model. */
+        $dados = selectAllContatos();
+
+        if(!empty($dados)){
+            return $dados;
+
+        }else{
+            return false;
+        }
     }
 
 

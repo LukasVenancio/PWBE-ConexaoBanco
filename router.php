@@ -3,7 +3,6 @@
 pela view. Será responsável por encaminhas as solicitações
 para a controller. */
 
-
 require_once('./controller/controllerContatos.php');
 
     $action = (string) null;
@@ -20,7 +19,29 @@ require_once('./controller/controllerContatos.php');
             
             /*Verificaçãao da ação requirida pela página.*/
             if($action == 'inserir'){
-                inserirContato($_POST);
+
+                /*Função de inserir da controller. */
+                $resposta = inserirContato($_POST);
+
+                /*Valida se o retorno da controller foi um booleano.*/
+                if(is_bool($resposta)){
+                    
+                    /*Verifica se o retorno foi verdadeiro. */
+                    if($resposta){
+                        echo("<script>
+                            alert('Registro inserido com sucesso!')
+                            window.location.href = 'index.php'
+                        </script>");
+                    }
+                  
+                  /*Verifica se o retorno foi um array, porque esse retorno
+                  (segundo a construção da nossa controller) significa que algo deu errado. */  
+                }elseif(is_array($resposta)){
+                    echo("<script>
+                            alert('".$resposta['message']."')
+                            window.history.back()
+                        </script>");
+                }
             }
             
         }
