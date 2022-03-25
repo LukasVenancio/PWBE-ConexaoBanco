@@ -9,7 +9,7 @@ require_once('./controller/controllerContatos.php');
     $component = (string) null;
 
     /*Verificação da requisição do formulário.*/
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'GET'){
 
         $component = strtolower($_GET['component']);
         $action = strtolower($_GET['action']);
@@ -36,6 +36,30 @@ require_once('./controller/controllerContatos.php');
                   
                   /*Verifica se o retorno foi um array, porque esse retorno
                   (segundo a construção da nossa controller) significa que algo deu errado. */  
+                }elseif(is_array($resposta)){
+                    echo("<script>
+                            alert('".$resposta['message']."')
+                            window.history.back()
+                        </script>");
+                }
+            
+            }elseif($action == 'deletar'){
+                
+                /*Recebe o id passado pelo href através do botão excluir. */
+                $id = $_GET['id'];
+                
+                $resposta = excluirContato($id);
+
+                if(is_bool($resposta)){
+
+                    if($resposta){
+                        
+                        echo("<script>
+                                alert('Registro inserido com sucesso!')
+                                window.location.href = 'index.php'
+                            </script>");
+                    }
+                    
                 }elseif(is_array($resposta)){
                     echo("<script>
                             alert('".$resposta['message']."')

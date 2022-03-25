@@ -4,8 +4,6 @@
         <meta charset="UTF-8">
         <title> Cadastro </title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
-
-
     </head>
     <body>
        
@@ -85,12 +83,12 @@
                
                     require_once('controller/controllerContatos.php');
 
+                    /*Função que retorna os dados do DB. */
                     $listaDeContatos = listarContatos();
 
+                    /*Retira os dados do array e os joga dentro das <td>. */
                     foreach($listaDeContatos as $contato){
 
-                    
-               
                ?>
                 <tr id="tblLinhas">
                     <td class="tblColunas registros"><?=$contato['nome']?></td>
@@ -99,7 +97,11 @@
                    
                     <td class="tblColunas registros">
                             <img src="img/edit.png" alt="Editar" title="Editar" class="editar">
-                            <img src="img/trash.png" alt="Excluir" title="Excluir" class="excluir">
+
+                            <a href="router.php?component=contatos&action=deletar&id=<?=$contato['id']?>">
+                                <img src="img/trash.png" alt="Excluir" title="Excluir" class="excluir">
+                            </a>
+
                             <img src="img/search.png" alt="Visualizar" title="Visualizar" class="pesquisar">
                     </td>
                 </tr>

@@ -43,8 +43,24 @@ Todos os tramatamentos e validações precisam ser feitos no arquivo controller.
 
     }
 
-    function excluirContato(){
+    function excluirContato($id){
 
+        /*Validação do id que foi informado. */
+        if($id != 0 && !empty($id) && is_numeric($id)){
+            
+            /*Verifica se foi possível deletar o contato. */
+            if(deleteContato($id)){
+                return true;
+            
+            }else{  
+                return array('idErro'   => 3,
+                             'message'  => 'O Data Base não pode excluir o registro.');
+            }
+        
+        }else{
+            return array('idErro'   => 4,
+                         'message'  => 'ID inválido.');
+        }
     }
 
     function listarContatos(){

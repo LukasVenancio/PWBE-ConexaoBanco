@@ -6,6 +6,9 @@
 
     function insertContato($dadosDeContato){
         
+        /*Declaração da variável de resposta, iniciada como false, para poder eliminar os elses de return false. */
+        $resposta = (boolean) false;
+
         /*  Abrindo a conexão com o Data Base. */
         $conexao = conectarMysql();
 
@@ -30,15 +33,14 @@
             /*Verificação de uma atualização no banco de dados (se uma linha foi acrescentada),
             ou seja, se o Data Base aceitou a inserção. */
             if(mysqli_affected_rows($conexao)){
-                return true;
+                $resposta = true;
             
-            }else{
-                return false;
             }
-            
-        }else{
-            return false;
-        }            
+        }
+
+        fecharConexaoMysql($conexao);
+
+        return $resposta;
     }    
 
     function updateContato(){
@@ -48,7 +50,7 @@
     function selectAllContatos(){
         
         $conexao = conectarMysql();
-        $sql = "select * from tblcontatos;";
+        $sql = "select * from tblcontatos order by idcontato desc;";
 
         /*Quando o mysqli_query é executado, com um script de select, o seu retorno passa a ser 
         de informações que retornarão do Data Base.*/
@@ -65,6 +67,7 @@
 
                 /*Seapara os dados desnecessários que retornam do Data Base.*/
                 $dados [$contador] = array(
+                    "id"         => $resultArray['idcontato'],
                     "nome"       => $resultArray['nome'],
                     "telefone"   => $resultArray['telefone'],
                     "celular"    => $resultArray['celular'],
@@ -74,13 +77,35 @@
 
                 $contador++;
             }
+
+            fecharConexaoMysql($conexao);
+
             return $dados;
         }
 
     }
 
-    function deleteContato(){
+    function deleteContato($id){
         
+        $conexao = conectarMysql();
+        $sql = "delete from tblcontatos where idcontato = ". $id .";";
+
+        $resposta = (boolean) false;
+
+        /* Executando o script no Data Base (passando como parâmetros, o próprio Data Base e
+        o script que será executado) e verificando se o script está correto através do if.*/ 
+        if(mysqli_query($conexao, $sql)){
+
+            /*Verificação de uma atualização no banco de dados (se uma linha foi acrescentada),
+            ou seja, se o Data Base aceitou a inserção. */
+            if(mysqli_affected_rows($conexao)){
+                $resposta = true;
+            }
+        }
+
+       fecharConexaoMysql($conexao);
+
+        return $resposta;
     }
 
 

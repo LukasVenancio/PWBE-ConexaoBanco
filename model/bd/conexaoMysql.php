@@ -19,6 +19,10 @@ const DATABASE = 'dbcontatos';
         return false;
     }
  }
+
+ function fecharConexaoMysql($conexao){
+    mysqli_close($conexao);
+ }
  /*
     Existem três formas de realizar a conexão com o DB MySQL no PHP:
 
