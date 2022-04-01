@@ -76,8 +76,24 @@ Todos os tramatamentos e validações precisam ser feitos no arquivo controller.
         }
     }
 
+    function buscarContato($id){
+        
+        /*Validação do id que foi informado. */
+        if($id != 0 && !empty($id) && is_numeric($id)){
 
+            /*Chama a função da model que busca um registro pelo seu id. */
+            $dados = selectByIdContato($id);
 
+            /*Verificando se houve um retorno de dados do DB. */
+            if(!empty($dados)){
+                return $dados;
+            }else{
+                return false;
+            }
 
-
+        }else{
+            return array('idErro'   => 4,
+                         'message'  => 'ID inválido.');
+        }
+    }
 ?>

@@ -48,6 +48,7 @@ require_once('./controller/controllerContatos.php');
                 /*Recebe o id passado pelo href através do botão excluir. */
                 $id = $_GET['id'];
                 
+                /*Chama a função de excluir da Controller. */
                 $resposta = excluirContato($id);
 
                 if(is_bool($resposta)){
@@ -55,7 +56,7 @@ require_once('./controller/controllerContatos.php');
                     if($resposta){
                         
                         echo("<script>
-                                alert('Registro inserido com sucesso!')
+                                alert('Registro excluído com sucesso!')
                                 window.location.href = 'index.php'
                             </script>");
                     }
@@ -66,6 +67,34 @@ require_once('./controller/controllerContatos.php');
                             window.history.back()
                         </script>");
                 }
+            
+            }elseif($action == 'buscar'){
+
+                /*Recebe o id passado pelo href através do botão editar. */
+                $id = $_GET['id'];
+
+                /*Chama a função de editar da Controller. */
+                $dados = buscarContato($id);
+
+                /*Precisamos passar os dados que retornaram do db para a index, porém o arquivo router não
+                possui retorno, então precisamos criar variáveis de sessão para transportar as
+                variáveis entre os arquivos. Essa variável somente será destruída quando o navegador for
+                fechado se não a destruirmos manualmente. */
+
+                /*Ativa a utilização de variáveis de sessão no servidor.*/
+                session_start();
+
+                /*Cria uma variável de sessão com o nome de 'dadosContato' e essa recebe o 
+                array que retornou do banco de dados. Essa variável de sessão será utilizada na index para
+                preencher as inputs com os dados já registrados. */
+                $_SESSION['dadosContato'] = $dados;
+
+                /*Fazendo o require da index, para que a tela não pisque novamente.*/
+                require_once('index.php');
+                
+                /*Caso quisermos diretamente mudar de página, devemos usar o comando header('location: index.php'), porém 
+                isso causará uma ação de carregamento no navegador, o que fará que a tela pisque.*/
+
             }
             
         }

@@ -85,6 +85,38 @@
 
     }
 
+    function selectByIdContato($id){
+
+        $conexao = conectarMysql();
+        $sql = "select * from tblcontatos where idcontato = ". $id .";";
+
+        /*Quando o mysqli_query é executado, com um script de select, o seu retorno passa a ser 
+        de informações que retornarão do Data Base.*/
+        $result = mysqli_query($conexao, $sql);
+
+        /*Verificando se houve retorno do Data Base.*/
+        if($result){
+
+            /* O método mysqli_fetch_assoc() converte o retorno do Data Base em um Array.*/
+            if($resultArray = mysqli_fetch_assoc($result)){
+
+                /*Seapara os dados desnecessários que retornam do Data Base.*/
+                $dados = array(
+                    "id"         => $resultArray['idcontato'],
+                    "nome"       => $resultArray['nome'],
+                    "telefone"   => $resultArray['telefone'],
+                    "celular"    => $resultArray['celular'],
+                    "email"      => $resultArray['email'],
+                    "observacao" => $resultArray['observacao']
+                );
+            }
+        }    
+
+            fecharConexaoMysql($conexao);
+
+            return $dados;
+    }
+
     function deleteContato($id){
         
         $conexao = conectarMysql();
