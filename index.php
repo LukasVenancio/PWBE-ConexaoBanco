@@ -1,11 +1,11 @@
 <?php
 
-    $id = (String) null;
-    $nome = (String) null;
-    $telefone = (String) null;
-    $celular = (String) null;
-    $email = (String) null;
-    $observacao = (String) null;
+/*Variável criada para diferenciar o action do form. 
+É iniciada com o inserir.*/
+    $form = "router.php?component=contatos&action=inserir";
+
+    // $id = (String) null;
+
     /*Valida se a utilização de variável de sessão está ativa no servidor.*/
     if(session_status()){
 
@@ -18,9 +18,16 @@
             $celular    = $_SESSION['dadosContato']['celular'];
             $email      = $_SESSION['dadosContato']['email'];
             $observacao = $_SESSION['dadosContato']['observacao'];
+
+            /*Já que a variável de sessão esta ativa (sabemos através do if), sabemos que a intenção é de editar
+            o registro, então o action passa a receber o 'editar'. */
+            $form = "router.php?component=contatos&action=editar&id=". $id;
+
+            /*Destrói a variável de sessão da memória do servidor. */
+            unset($_SESSION['dadosContato']);
         }
     }
-
+    
 ?>
 <!DOCTYPE>
 <html lang="pt-br">
@@ -37,13 +44,14 @@
                 
             </div>
             <div id="cadastroInformacoes">
-                <form  action="router.php?component=contatos&action=inserir" name="frmCadastro" method="post" >
+                <form  action="<?=$form?>" name="frmCadastro" method="post" >
                     <div class="campos">
                         <div class="cadastroInformacoesPessoais">
                             <label> Nome: </label>
                         </div>
                         <div class="cadastroEntradaDeDados">
-                            <input type="text" name="txtNome" value="<?=$nome?>" placeholder="Digite seu Nome" maxlength="100">
+                            <!-- if ternário para evitar o erro de variável indefinida. -->
+                            <input type="text" name="txtNome" value="<?=isset($nome)?$nome:null?>" placeholder="Digite seu Nome" maxlength="100">
                         </div>
                     </div>
                                      
@@ -52,7 +60,7 @@
                             <label> Telefone: </label>
                         </div>
                         <div class="cadastroEntradaDeDados">
-                            <input type="tel" name="txtTelefone" value="<?=$telefone?>">
+                            <input type="tel" name="txtTelefone" value="<?=isset($telefone)?$telefone:null?>">
                         </div>
                     </div>
                     <div class="campos">
@@ -60,7 +68,7 @@
                             <label> Celular: </label>
                         </div>
                         <div class="cadastroEntradaDeDados">
-                            <input type="tel" name="txtCelular" value="<?=$celular?>">
+                            <input type="tel" name="txtCelular" value="<?=isset($celular)?$celular:null?>">
                         </div>
                     </div>
                    
@@ -70,7 +78,7 @@
                             <label> Email: </label>
                         </div>
                         <div class="cadastroEntradaDeDados">
-                            <input type="email" name="txtEmail" value="<?=$email?>">
+                            <input type="email" name="txtEmail" value="<?=isset($email)?$email:null?>">
                         </div>
                     </div>
                     <div class="campos">
@@ -78,7 +86,7 @@
                             <label> Observações: </label>
                         </div>
                         <div class="cadastroEntradaDeDados">
-                            <textarea name="txtObs" cols="50" rows="7"><?=$observacao?></textarea>
+                            <textarea name="txtObs" cols="50" rows="7"><?=isset($observacao)?$observacao:null?></textarea>
                         </div>
                     </div>
                     <div class="enviar">

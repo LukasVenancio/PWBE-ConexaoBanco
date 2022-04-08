@@ -39,8 +39,45 @@ Todos os tramatamentos e validações precisam ser feitos no arquivo controller.
 
     }
 
-    function atualizarContato(){
+    function atualizarContato($dadosDoContato, $id){
+        
+        if(!empty($dadosDoContato)){
 
+            /*Validação dos campos obrigatórios do Data Base. */
+            if(!empty($dadosDoContato['txtNome']) && !empty($dadosDoContato['txtCelular']) && !empty($dadosDoContato['txtEmail']) ){
+                
+                if(!empty($id) && is_numeric($id)){
+                    
+                    /*  Criação do array que será passado para o arquivo model,
+                    conforme os atributos do Data Base.*/
+                    $arrayDados = array(
+                        "idcontato" => $id,
+                        "nome"      => $dadosDoContato['txtNome'],
+                        "telefone"  => $dadosDoContato['txtTelefone'],
+                        "celular"   => $dadosDoContato['txtCelular'],
+                        "email"     => $dadosDoContato['txtEmail'],
+                        "obs"       => $dadosDoContato['txtObs']
+                    );
+
+                    /*Função da model que de fato faz a inserção no Data Base. */
+                    if(updateContato($arrayDados)){
+                        return true;
+                    
+                    }else{
+                        return array('idErro' => 1,
+                                    'message' => 'Não foi possível atualizar os dados no Data Base.');
+                    }
+                    
+                }else{
+                    return array('idErro'   => 4,
+                                'message'   => 'ID inválido.');
+                }
+
+            }else{
+                return array('idErro' => 2,
+                            'message' => 'Existem campos obrigatórios que não foram preenchidos.');
+            }
+        }
     }
 
     function excluirContato($id){

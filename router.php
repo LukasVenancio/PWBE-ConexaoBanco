@@ -95,9 +95,38 @@ require_once('./controller/controllerContatos.php');
                 /*Caso quisermos diretamente mudar de página, devemos usar o comando header('location: index.php'), porém 
                 isso causará uma ação de carregamento no navegador, o que fará que a tela pisque.*/
 
-            }
             
+            }elseif($action == 'editar'){
+
+                    $id = $_GET['id'];
+
+                    $dados = $_POST;
+
+                    /*Função de inserir da controller. */
+                    $resposta = atualizarContato($_POST, $id);
+    
+                    /*Valida se o retorno da controller foi um booleano.*/
+                    if(is_bool($resposta)){
+                        
+                        /*Verifica se o retorno foi verdadeiro. */
+                        if($resposta){
+                            echo("<script>
+                                    alert('Registro atualizado com sucesso!')
+                                    window.location.href = 'index.php'
+                                </script>");
+                        }
+                      
+                      /*Verifica se o retorno foi um array, porque esse retorno
+                      (segundo a construção da nossa controller) significa que algo deu errado. */  
+                    }elseif(is_array($resposta)){
+                        echo("<script>
+                                alert('".$resposta['message']."')
+                                window.history.back()
+                            </script>");
+                    }
+            
+            }
         }
-    }
+}
 
 ?>

@@ -43,8 +43,39 @@
         return $resposta;
     }    
 
-    function updateContato(){
-        
+    function updateContato($dadosDeContato){
+         /*Declaração da variável de resposta, iniciada como false, para poder eliminar os elses de return false. */
+         $resposta = (boolean) false;
+
+         /*  Abrindo a conexão com o Data Base. */
+         $conexao = conectarMysql();
+ 
+         /*Montagem do script SQL para inserção dos dados.*/
+         $sql = "update tblcontatos set
+
+                     nome       = '".$dadosDeContato['nome']."', 
+                     telefone   = '".$dadosDeContato['telefone']."', 
+                     celular    = '".$dadosDeContato['celular']."', 
+                     email      = '".$dadosDeContato['email']."', 
+                     observacao = '".$dadosDeContato['obs']."'
+
+                where idcontato = " . $dadosDeContato['idcontato'].";";
+ 
+         /* Executando o script no Data Base (passando como parâmetros, o próprio Data Base e
+         o script que será executado) e verificando se o script está correto através do if.*/            
+         if(mysqli_query($conexao, $sql)){
+             
+             /*Verificação de uma atualização no banco de dados (se uma linha foi acrescentada),
+             ou seja, se o Data Base aceitou a inserção. */
+             if(mysqli_affected_rows($conexao)){
+                 $resposta = true;
+             
+             }
+         }
+ 
+         fecharConexaoMysql($conexao);
+ 
+         return $resposta;
     }
 
     function selectAllContatos(){
